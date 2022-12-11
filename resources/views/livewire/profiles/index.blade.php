@@ -11,9 +11,15 @@
                         <span class="text-6xl py-2" title="{{ $profile->dob->format("m/d/Y") }}">{{ $profile->avatar }}</span>
 
                         <div class="py-8 ml-3">
-                            <a class="btn-blue btn mx-4" href="#">
-                                <x-icon.track/> Track
-                            </a>
+                            @if (empty ($profile->symptoms))
+                                <a class="btn-blue btn mx-4" href="#" wire:click.prevent="$emitTo('profiles.symptoms-modal', 'edit', @js($profile->uuid))">
+                                    <x-icon.cogs/> Symptoms
+                                </a>
+                            @else
+                                <a class="btn-blue btn mx-4" href="#">
+                                    <x-icon.track/> Track
+                                </a>
+                            @endif
                         </div>
                     </div>
 
@@ -22,9 +28,11 @@
                             <x-icon.edit /> Profile
                         </a>
 
-                        <a class="ml-4" href="#">
-                            <x-icon.cogs/> Symptoms
-                        </a>
+                        @if (! empty ($profile->symptoms))
+                            <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.symptoms-modal', 'edit', @js($profile->uuid))">
+                                <x-icon.cogs/> Symptoms
+                            </a>
+                        @endif
 
                         <a class="ml-4" href="#">
                             <x-icon.cogs/> Diagnoses

@@ -5,15 +5,18 @@
 .btn {
     @apply font-bold py-2 px-4 rounded mx-1;
 }
+.btn:disabled {
+    opacity: 0.5;
+}
 .btn-blue {
     @apply bg-blue-500 text-white;
 }
-.btn-blue:hover {
+.btn-blue:not(:disabled):hover {
     @apply bg-blue-700;
 }
 .btn-gray {
     @apply bg-gray-400 text-white;
 }
-.btn-gray:hover {
+.btn-gray:not(:disabled):hover {
     @apply bg-gray-600;
 }

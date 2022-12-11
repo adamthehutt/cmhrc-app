@@ -1,7 +1,7 @@
 @props([
     'name',
     'show' => false,
-    'maxWidth' => '2xl'
+    'maxWidth' => '2xl',
 ])
 
 @php
@@ -73,5 +73,12 @@ $maxWidth = [
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
         {{ $slot }}
+
+        @isset ($footer)
+            <div class="text-right my-5 border-t pt-3 pr-3">
+                {{ $footer }}
+            </div>
+        @endisset
+
     </div>
 </div>

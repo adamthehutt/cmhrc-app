@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire\Profiles;
 
+use App\Http\Livewire\Concerns\UsesModal;
 use App\Models\Profile;
 use Livewire\Component;
 
 class Modal extends Component
 {
+    use UsesModal;
+
     public Profile $profile;
 
     protected $rules = [
@@ -48,11 +51,6 @@ class Modal extends Component
             ->save();
 
         $this->emitTo('profiles.index', 'profileCreated', $this->profile->id);
-        $this->dispatchBrowserEvent('close');
-    }
-
-    public function cancel()
-    {
         $this->dispatchBrowserEvent('close');
     }
 

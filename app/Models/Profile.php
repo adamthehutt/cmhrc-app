@@ -13,8 +13,13 @@ class Profile extends Model
 
     protected $primaryKey = "uuid";
 
+    protected $attributes = [
+        'symptoms' => '[]',
+    ];
+
     protected $casts = [
-        'dob' => 'date:Y-m-d'
+        'dob' => 'date:Y-m-d',
+        'symptoms' => 'array',
     ];
 
     public function user(): BelongsTo
