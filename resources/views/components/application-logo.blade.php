@@ -1,0 +1,1 @@
+<img src="{{ asset('images/logo.webp') }}" alt="CMHRC Logo" class="w-1/2"/>
