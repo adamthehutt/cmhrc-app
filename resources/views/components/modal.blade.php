@@ -2,6 +2,7 @@
     'name',
     'show' => false,
     'maxWidth' => '2xl',
+    'profile' => null,
 ])
 
 @php
@@ -72,10 +73,26 @@ $maxWidth = [
         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
-        {{ $slot }}
+        @isset ($header)
+            <div class="border-b p-3 mb-5">
+                <span>
+                @isset ($profile)
+                    <span class="text-4xl float-right">{{ $profile->avatar }}</span>
+                @endisset
+                </span>
+                <h2 class="text-2xl pt-1 font-bold">
+                    {{ $header }}
+                </h2>
+                <div class="clear-both"></div>
+            </div>
+        @endisset
+
+        <div class="px-5 pb-5">
+            {{ $slot }}
+        </div>
 
         @isset ($footer)
-            <div class="text-right my-5 border-t pt-3 pr-3">
+            <div class="text-right mt-5 border-t py-3 pr-3 bg-gray-100">
                 {{ $footer }}
             </div>
         @endisset

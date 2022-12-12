@@ -73,6 +73,7 @@ class SymptomsModal extends Component
     public function save()
     {
         $this->validate();
+        $this->profile->symptoms = array_values($this->profile->symptoms);
         $this->profile->save();
 
         $this->emit('profileUpdated', $this->profile->uuid);

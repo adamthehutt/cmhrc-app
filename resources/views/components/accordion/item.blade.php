@@ -13,7 +13,16 @@
     x-ref="self"
     x-on:accordion.window="accordion"
 >
-    <div class="font-bold p-3" x-on:click="$dispatch('accordion', { item: $refs.self, wrapper: $refs.wrapper })" role="button" x-bind:class="{'bg-gray-50': !expanded, 'bg-gray-200': expanded}">
+    <div class="font-bold p-3"
+         role="button"
+         x-on:click="$dispatch('accordion', { item: $refs.self, wrapper: $refs.wrapper })"
+         x-bind:class="{
+            'bg-gray-50': !expanded,
+            'bg-gray-200': expanded,
+            'text-gray-700': !expanded,
+            'text-black': expanded,
+        }"
+    >
         <i class="fas fa-caret-right mr-1" x-show="!expanded"></i>
         <i class="fas fa-caret-down mr-1" x-show="expanded"></i>
         {{ __($header) }}

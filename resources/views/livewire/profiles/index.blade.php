@@ -23,25 +23,27 @@
                         </div>
                     </div>
 
-                    <div class="flex my-2 text-gray-500">
-                        <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.modal', 'edit', @js($profile->uuid))">
+                    <div class="flex my-2 text-muted">
+                        <a href="#" wire:click.prevent="$emitTo('profiles.modal', 'edit', @js($profile->uuid))">
                             <x-icon.edit /> Profile
                         </a>
 
-                        @if (! empty ($profile->symptoms))
-                            <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.symptoms-modal', 'edit', @js($profile->uuid))">
-                                <x-icon.cogs/> Symptoms
-                            </a>
-                        @endif
+                        <span>
+                            @if (! empty ($profile->symptoms))
+                                <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.symptoms-modal', 'edit', @js($profile->uuid))">
+                                    <x-icon.cogs/> Symptoms ({{ count($profile->symptoms) }})
+                                </a>
+                            @endif
+                        </span>
 
-                        <a class="ml-4" href="#">
-                            <x-icon.cogs/> Diagnoses
+                        <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.diagnoses-modal', 'edit', @js($profile->uuid))">
+                            <x-icon.cogs/> Diagnoses ({{ $profile->diagnoses()->count() }})
                         </a>
                     </div>
                 </li>
             @endforeach
             <li class="my-3 text-right mr-8 my-4">
-                <a href="#" wire:click.prevent="$emitTo('profiles.modal', 'create')" class="text-blue-900"><i class="fas fa-plus-circle"></i> Add another profile</a>
+                <x-primary-button wire:click.prevent="$emitTo('profiles.modal', 'create')" icon="fas fa-plus-circle">Add another profile</x-primary-button>
             </li>
         @endif
     </ul>

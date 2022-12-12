@@ -20,3 +20,11 @@
 .btn-gray:not(:disabled):hover {
     @apply bg-gray-600;
 }
+
+h3 {
+    @apply font-bold mb-1 mt-4;
+}
+
+.text-muted {
+    @apply text-gray-600;
+}
