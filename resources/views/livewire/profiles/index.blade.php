@@ -8,7 +8,9 @@
             @foreach (auth()->user()->profiles as $profile)
                 <li class="my-3 p-2 hover:bg-gray-50 text-sm @if(! $loop->last) border-b @endif" wire:key="{{ $profile->uuid }}">
                     <div class="flex">
-                        <span class="text-6xl py-2" title="{{ $profile->dob->format("m/d/Y") }}">{{ $profile->avatar }}</span>
+                        <a href="#" wire:click.prevent="$emitTo('profiles.modal', 'edit', @js($profile->uuid))" class="text-6xl py-2" title="{{ $profile->dob->format("m/d/Y") }}">
+                            {{ $profile->avatar }}
+                        </a>
 
                         <div class="py-8 ml-3">
                             @if (empty ($profile->symptoms))
@@ -16,7 +18,7 @@
                                     <x-icon.cogs/> Symptoms
                                 </a>
                             @else
-                                <a class="btn-blue btn mx-4" href="#">
+                                <a class="btn-blue btn mx-4" href="{{ route("track.index", ["profile" => $profile->uuid]) }}">
                                     <x-icon.track/> Track
                                 </a>
                             @endif

@@ -56,23 +56,9 @@ class Modal extends Component
 
     public function getAvatarOptionsProperty(): array
     {
-        $base = [
-            '🦁' => '🦁',
-            '🐶' => '🐶',
-            '😺' => '😺',
-            '🐯' => '🐯',
-            '🐮' => '🐮',
-            '🦊' => '🦊',
-            '🐰' => '🐰',
-            '🐸' => '🐸',
-            '🐨' => '🐨',
-            '🐭' => '🐭',
-            '🐻' => '🐻',
-        ];
-
         $taken = auth()->user()->profiles()->where('uuid', '!=', $this->profile->uuid)->pluck("avatar")->toArray();
 
-        return array_diff($base, $taken);
+        return array_diff(config("profiles.avatars"), $taken);
     }
 
     public function render()

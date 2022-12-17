@@ -16,7 +16,7 @@
                         {{ __('Profiles') }}
                     </x-nav-link>
 
-                    <x-nav-link href="#" :active="request()->routeIs('track.index')">
+                    <x-nav-link href="#" @click.prevent="$dispatch('open-modal', 'track-profile-select')" :active="request()->routeIs('track.index')">
                         {{ __('Track') }}
                     </x-nav-link>
                 </div>
@@ -42,4 +42,13 @@
             </x-responsive-nav-link>
         </div>
     </div>
+
+    <x-modal name="track-profile-select">
+        <x-slot:header>Select a Profile to Track</x-slot:header>
+        @foreach (\App\Models\Profile::all() as $profile)
+            <a href="{{ route("track.index", $profile) }}" class="text-6xl mx-2">
+                <x-avatar-lg :profile="$profile"/>
+            </a>
+        @endforeach
+    </x-modal>
 </nav>

@@ -28,3 +28,27 @@ h3 {
 .text-muted {
     @apply text-gray-600;
 }
+
+table {
+    @apply w-full text-left text-gray-700 dark:text-gray-400
+}
+
+thead {
+    @apply text-xs text-gray-900 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400
+}
+
+th {
+    @apply p-2
+}
+
+td {
+    @apply px-2 py-1
+}
+
+*:not(thead) > tr {
+    @apply hover:bg-gray-100
+}
+
+tr:first-child td {
+    @apply pt-2 px-2 p-1
+}

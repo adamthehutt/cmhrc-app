@@ -13,14 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::redirect('/', "/profiles");
+
+Route::middleware('auth')->group(function() {
+    Route::prefix("profiles")->group(function () {
+        Route::view('/', 'profiles.index')->name("profiles.index");
+    });
+
+    Route::prefix("track")->group(function () {
+        Route::view('{profile?}', 'track.index')->name("track.index");
+    });
 });
 
-Route::prefix("profiles")->middleware('auth')->group(function () {
-    Route::view('/', 'profiles.index')->name("profiles.index");
-    Route::view('create', 'profiles.create')->name("profiles.create");
-});
+
 
 
 require __DIR__.'/auth.php';

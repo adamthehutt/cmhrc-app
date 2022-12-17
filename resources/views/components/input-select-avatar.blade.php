@@ -1,0 +1,1 @@
+<x-input-select :options="$options" {{ $attributes }}/>
