@@ -14,8 +14,17 @@
     <x-accordion>
         <x-accordion.item :badge="collect($this->sectionCount)->sum()" header="Selected symptoms">
             @forelse ($profile->symptoms as $symptom)
-                <div class="my-2 text-sm">
+                <div class="my-2">
                     {{ str_starts_with($symptom, "other.") ? str($symptom)->replaceFirst("other.", "") : __("symptoms.$symptom") }}
+                    <div class="text-xs text-muted">
+                        @if ($firstReported = $profile->firstDateForSymptom($symptom))
+                            First on {{ $firstReported->format("m/d/y") }}
+                            <span class="mx-1">&middot;</span>
+                            Last on {{ $profile->lastDateForSymptom($symptom)->format("m/d/y") }}
+                        @else
+                            Not yet reported
+                        @endif
+                    </div>
                 </div>
             @empty
                 <div class="text-gray-500">None</div>
@@ -24,6 +33,32 @@
     </x-accordion>
 
     <hr class="my-5"/>
+
+    <div>
+        @if (($inactive = $profile->inactiveSymptoms()) && $inactive->count())
+            <h3>No longer tracking:</h3>
+            <x-accordion>
+                <x-accordion.item header="Inactive symptoms" :badge="$inactive->count()">
+                    @foreach ($inactive as $symptom)
+                        <div class="my-2">
+                            {{ str_starts_with($symptom, "other.") ? str($symptom)->replaceFirst("other.", "") : __("symptoms.$symptom") }}
+                            <div class="text-xs text-muted">
+                                @if ($firstReported = $profile->firstDateForSymptom($symptom))
+                                    First on {{ $firstReported->format("m/d/y") }}
+                                    <span class="mx-1">&middot;</span>
+                                    Last on {{ $profile->lastDateForSymptom($symptom)->format("m/d/y") }}
+                                @else
+                                    Not yet reported
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </x-accordion.item>
+            </x-accordion>
+
+            <hr class="my-5"/>
+        @endif
+    </div>
 
     <h3>Start tracking:</h3>
     <x-accordion>

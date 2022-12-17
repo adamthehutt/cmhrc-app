@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
             {{ __('Manage Profiles') }}
         </h2>
-        <div class="text-lg text-gray-500 my-2 xl:w-1/2 lg:w-3/4">Each profile corresponds to a person you'll track. Most users only need one profile,
+        <div class="text-lg text-gray-500 my-2 xl:w-2/3 lg:w-3/4">Each profile corresponds to a person you'll track. Most users only need one profile,
             but some need a few (such as a parent tracking multiple children).</div>
     </x-slot>
 

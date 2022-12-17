@@ -19,10 +19,6 @@ class Symptoms extends Component
 
     public DateNote $dateNote;
 
-    protected $queryString = [
-        'date'
-    ];
-
     protected $listeners = [
         'dateSelected',
     ];
