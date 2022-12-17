@@ -158,6 +158,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'symptoms' => [
+            'rating-missing' => "Make sure you enter a rating for each symptom. If a symptom is no longer valid, you can edit your settings to no longer include it."
+        ]
     ],
 
     /*

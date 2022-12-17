@@ -22,4 +22,9 @@ class SymptomReport extends Model
     {
         return $this->belongsTo(Profile::class, "profile_id");
     }
+
+    public function isSaved(): bool
+    {
+        return null !== $this->saved_at;
+    }
 }

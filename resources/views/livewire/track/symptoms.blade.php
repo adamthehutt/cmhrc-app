@@ -1,4 +1,25 @@
 <div class="p-6">
+    <div class="lg:w-2/3 mx-auto">
+        @if (! $symptomReports?->first()?->isSaved())
+            <x-alert.info class="mb-3">
+                This day's report has not been finalized yet. When you're finished recording for the day,
+                click "Save and Score" to save your ratings and have the day scored.
+            </x-alert.info>
+        @else
+            <div @class([
+              "mb-3 p-3 border text-center text-lg",
+              "bg-green-200 border-green-500" => $this->score <= 25,
+              "bg-gray-200 border-gray-500" => $this->score > 25 && $this->score < 75,
+              "bg-red-200 border-red-500" => $this->score >= 75,
+            ])>
+                The Symptom Severity Index for {{ \Illuminate\Support\Carbon::make($date)->format("M jS, Y") }} is
+                <div class="font-bold text-4xl">
+                    {{ $this->score }} / 100
+                </div>
+            </div>
+        @endif
+    </div>
+
     <table>
         <thead>
         <tr>
@@ -18,7 +39,7 @@
         </tr>
         </thead>
         @if ($date)
-            @foreach ($profile->symptoms as $symptom)
+            @foreach ($this->symptomsToList as $symptom)
                 <livewire:track.symptom-row
                         :symptom="$symptom"
                         :report="$symptomReports->firstWhere('symptom', $symptom)"
@@ -43,8 +64,22 @@
                 <x-input-textarea wire:model="dateNote.notes" class="lg:w-1/2 md:w-2/3 w-full" placeholder="Enter some notes to provide additional context"/>
             </x-input-label>
             <div class="text-muted text-sm" wire:loading.delay wire:target="dateNote.notes">
-                <i class="fas fa-spinner fa-spin"></i> Saving
+                <i class="fas fa-spinner fa-spin"></i> Working
             </div>
+        @endif
+    </div>
+
+    <div>
+        @error('symptomReports')
+            <x-alert.error class="my-4">
+                <x-input-error :messages="$errors->get('symptomReports')"/>
+            </x-alert.error>
+        @enderror
+    </div>
+
+    <div class="text-right">
+        @if (! $symptomReports?->first()?->isSaved())
+            <x-primary-button wire:click.prevent="save">Save and Score</x-primary-button>
         @endif
     </div>
 </div>

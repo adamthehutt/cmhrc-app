@@ -21,10 +21,13 @@ class DateSelector extends Component
      */
     public $timezoneOffset = 0;
 
+    protected $queryString = ['date'];
+
     public function mount()
     {
         if (request()->has("date")) {
             $this->date = request("date");
+            $this->updatedDate();
         }
     }
 
@@ -33,9 +36,10 @@ class DateSelector extends Component
         if (! isset($this->date)) {
             $this->carbon = now()->subSeconds($offset);
             $this->date = $this->carbon->toDateString();
-
-            $this->emit("dateSelected", $this->date);
         }
+
+        // Call this here because this needs to run on initialization regardless
+        $this->emit("dateSelected", $this->date);
     }
 
     public function updatingDate($value)

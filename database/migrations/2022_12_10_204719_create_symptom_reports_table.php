@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('symptom_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Profile::class);
+            $table->uuid("profile_id");
             $table->string("symptom");
             $table->date("date");
             $table->unsignedTinyInteger("rating");

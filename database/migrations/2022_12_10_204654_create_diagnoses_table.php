@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('diagnoses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Profile::class);
+            $table->uuid('profile_id');
             $table->string("name");
             $table->unsignedSmallInteger("year_diagnosed");
             $table->boolean("current");

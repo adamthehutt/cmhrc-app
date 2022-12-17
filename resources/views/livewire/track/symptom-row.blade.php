@@ -3,15 +3,15 @@
         <x-symptom-name :symptom="$symptom"/>
     </td>
     <td class="text-center">
-        <x-icon.rating-0 :rating="$report->rating"/>
+        <x-icon.rating :rating="$report->rating" :value="0" :editable="! $report->isSaved()"/>
     </td>
     <td class="text-center">
-        <x-icon.rating-1 :rating="$report->rating"/>
+        <x-icon.rating :rating="$report->rating" :value="1" :editable="! $report->isSaved()"/>
     </td>
     <td class="text-center">
-        <x-icon.rating-2 :rating="$report->rating"/>
+        <x-icon.rating :rating="$report->rating" :value="2" :editable="! $report->isSaved()"/>
     </td>
     <td class="text-center">
-        <x-icon.rating-3 :rating="$report->rating"/>
+        <x-icon.rating :rating="$report->rating" :value="3" :editable="! $report->isSaved()"/>
     </td>
 </tr>

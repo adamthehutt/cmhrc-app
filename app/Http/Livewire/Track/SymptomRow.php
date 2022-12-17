@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Track;
 
 use App\Models\Profile;
 use App\Models\SymptomReport;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class SymptomRow extends Component
@@ -38,9 +39,18 @@ class SymptomRow extends Component
             ->profile()->associate($this->profile);
     }
 
+    public function updatingReportRating($value)
+    {
+        if ($this->report->isSaved()) {
+            throw ValidationException::withMessages(['symptom' => ['This rating has already been recorded']]);
+        }
+    }
+
     public function updatedReportRating()
     {
         $this->report->save();
+
+        $this->emitTo("track.symptoms", "updatedRating", $this->report->id);
     }
 
     /**

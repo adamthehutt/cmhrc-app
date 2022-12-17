@@ -21,11 +21,8 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix("track")->group(function () {
-        Route::view('{profile?}', 'track.index')->name("track.index");
+        Route::view('{profile?}', 'track.index')->name("track.index")->can("view,profile");
     });
 });
-
-
-
 
 require __DIR__.'/auth.php';

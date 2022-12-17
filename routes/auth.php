@@ -20,7 +20,7 @@ Route::get("/auth/force", function () {
         abort(404);
     }
 
-    $user = User::firstOrCreate(['email' => 'adam.huttler@gmail.com', 'name' => 'Adam Huttler']);
+    $user = User::firstOrCreate(['email' => 'adam.huttler@gmail.com', 'name' => 'Adam Huttler', 'password' => 'secret123']);
     Auth::login($user);
 
     return redirect()->route('profiles.index');

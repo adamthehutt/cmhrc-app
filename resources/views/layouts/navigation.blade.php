@@ -46,7 +46,7 @@
     <x-modal name="track-profile-select">
         <x-slot:header>Select a Profile to Track</x-slot:header>
         @foreach (\App\Models\Profile::all() as $profile)
-            <a href="{{ route("track.index", $profile) }}" class="text-6xl mx-2">
+            <a href="{{ route("track.index", ['profile' => $profile->uuid, 'date' => today()->toDateString()]) }}" class="text-6xl mx-2">
                 <x-avatar-lg :profile="$profile"/>
             </a>
         @endforeach

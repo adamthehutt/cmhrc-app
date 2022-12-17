@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Track;
 
+use App\Actions\CalculateScoreForDay;
 use App\Models\DateNote;
 use App\Models\Profile;
 use App\Models\SymptomReport;
+use App\Rules\SymptomReportComplete;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
@@ -21,6 +23,7 @@ class Symptoms extends Component
 
     protected $listeners = [
         'dateSelected',
+        'updatedRating',
     ];
 
     protected $rules = [
@@ -42,6 +45,8 @@ class Symptoms extends Component
         $this->date = Carbon::make($date);
         $this->loadReports();
         $this->loadNote();
+
+        $this->resetValidation();
     }
 
     public function updatedDateNote()
@@ -51,6 +56,34 @@ class Symptoms extends Component
             ->profile()->associate($this->profile)
             ->setAttribute("date", $this->date)
             ->save();
+    }
+
+    public function updatedRating(SymptomReport $report)
+    {
+        $this->loadReports();
+    }
+
+    public function save()
+    {
+        $this->resetValidation();
+
+        $this->validate([
+            "symptomReports" => [new SymptomReportComplete($this->profile)]
+        ]);
+
+        $this->symptomReports->each->update(['saved_at' => now()]);
+    }
+
+    public function getScoreProperty()
+    {
+        return (new CalculateScoreForDay($this->profile, $this->date))();
+    }
+
+    public function getSymptomsToListProperty()
+    {
+        return $this->symptomReports?->first()?->isSaved()
+            ? $this->symptomReports->pluck("symptom")
+            : $this->profile->symptoms;
     }
 
     public function render()

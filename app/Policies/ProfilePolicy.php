@@ -18,7 +18,7 @@ class ProfilePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -30,7 +30,7 @@ class ProfilePolicy
      */
     public function view(User $user, Profile $profile)
     {
-        //
+        return $profile->user_id === $user->id;
     }
 
     /**
@@ -41,7 +41,7 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class ProfilePolicy
      */
     public function update(User $user, Profile $profile)
     {
-        //
+        return $profile->user_id === $user->id;
     }
 
     /**
@@ -65,7 +65,7 @@ class ProfilePolicy
      */
     public function delete(User $user, Profile $profile)
     {
-        //
+        return false;
     }
 
     /**
@@ -77,7 +77,7 @@ class ProfilePolicy
      */
     public function restore(User $user, Profile $profile)
     {
-        //
+        return $profile->user_id === $user->id;
     }
 
     /**
@@ -89,6 +89,6 @@ class ProfilePolicy
      */
     public function forceDelete(User $user, Profile $profile)
     {
-        //
+        return false;
     }
 }

@@ -18,7 +18,7 @@
                                     <x-icon.cogs/> Symptoms
                                 </a>
                             @else
-                                <a class="btn-blue btn mx-4" href="{{ route("track.index", ["profile" => $profile->uuid]) }}">
+                                <a class="btn-blue btn mx-4" href="{{ route("track.index", ['profile' => $profile->uuid, 'date' => today()->toDateString()]) }}" wire:key="track-button-{{$profile->uuid}}">
                                     <x-icon.track/> Track
                                 </a>
                             @endif

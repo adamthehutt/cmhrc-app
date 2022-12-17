@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('date_notes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Profile::class);
+            $table->uuid('profile_id');
             $table->date("date");
             $table->text("notes");
             $table->timestamps();
