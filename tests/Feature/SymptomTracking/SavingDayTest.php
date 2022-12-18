@@ -7,9 +7,6 @@ use App\Models\Profile;
 use App\Models\SymptomReport;
 use App\Rules\SymptomReportComplete;
 use Livewire\Livewire;
-use Tests\TestCase;
-
-uses(TestCase::class);
 
 it ("blocks saving a day if report is incomplete", function () {
     $profile = Profile::factory()->create([
