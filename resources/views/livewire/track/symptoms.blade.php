@@ -1,6 +1,6 @@
 <div class="p-6">
     <div class="lg:w-2/3 mx-auto">
-        @if (! $symptomReports?->first()?->isSaved())
+        @if (! $isSaved)
             <x-alert.info class="mb-3">
                 This day's report has not been finalized yet. When you're finished recording for the day,
                 click "Save and Score" to save your ratings and have the day scored.
@@ -61,9 +61,9 @@
         @if ($date)
             <x-input-label>
                 Notes for {{ \Illuminate\Support\Carbon::make($date)->format("F jS, Y") }}
-                <x-input-textarea wire:model="dateNote.notes" class="lg:w-1/2 md:w-2/3 w-full" placeholder="Enter some notes to provide additional context"/>
+                <x-input-textarea wire:model="dateReport.notes" class="lg:w-1/2 md:w-2/3 w-full" placeholder="Enter some notes to provide additional context"/>
             </x-input-label>
-            <div class="text-muted text-sm" wire:loading.delay wire:target="dateNote.notes">
+            <div class="text-muted text-sm" wire:loading.delay wire:target="dateReport.notes">
                 <i class="fas fa-spinner fa-spin"></i> Working
             </div>
         @endif
@@ -78,7 +78,7 @@
     </div>
 
     <div class="text-right">
-        @if (! $symptomReports?->first()?->isSaved())
+        @if (! $isSaved)
             <x-primary-button wire:click.prevent="save">Save and Score</x-primary-button>
         @endif
     </div>

@@ -24,6 +24,10 @@ class SymptomRow extends Component
         "report.rating" => [],
     ];
 
+    protected $listeners = [
+        'dateFinalized' => '$refresh',
+    ];
+
     /**
      * Create a new component instance.
      *
@@ -41,7 +45,7 @@ class SymptomRow extends Component
 
     public function updatingReportRating($value)
     {
-        if ($this->report->isSaved()) {
+        if (null !== $this->report->dateReport?->score) {
             throw ValidationException::withMessages(['symptom' => ['This rating has already been recorded']]);
         }
     }
@@ -51,6 +55,11 @@ class SymptomRow extends Component
         $this->report->save();
 
         $this->emitTo("track.symptoms", "updatedRating", $this->report->id);
+    }
+
+    public function getEditableProperty(): bool
+    {
+        return null === $this->report->dateReport?->score;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\DateNote;
+use App\Models\DateReport;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class DateNotePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DateNote  $dateNote
+     * @param  \App\Models\DateReport  $dateNote
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, DateNote $dateNote)
+    public function view(User $user, DateReport $dateNote)
     {
         //
     }
@@ -48,10 +48,10 @@ class DateNotePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DateNote  $dateNote
+     * @param  \App\Models\DateReport  $dateNote
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, DateNote $dateNote)
+    public function update(User $user, DateReport $dateNote)
     {
         //
     }
@@ -60,10 +60,10 @@ class DateNotePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DateNote  $dateNote
+     * @param  \App\Models\DateReport  $dateNote
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, DateNote $dateNote)
+    public function delete(User $user, DateReport $dateNote)
     {
         //
     }
@@ -72,10 +72,10 @@ class DateNotePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DateNote  $dateNote
+     * @param  \App\Models\DateReport  $dateNote
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, DateNote $dateNote)
+    public function restore(User $user, DateReport $dateNote)
     {
         //
     }
@@ -84,10 +84,10 @@ class DateNotePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DateNote  $dateNote
+     * @param  \App\Models\DateReport  $dateNote
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, DateNote $dateNote)
+    public function forceDelete(User $user, DateReport $dateNote)
     {
         //
     }

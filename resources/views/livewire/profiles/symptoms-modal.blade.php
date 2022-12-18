@@ -15,16 +15,7 @@
         <x-accordion.item :badge="collect($this->sectionCount)->sum()" header="Selected symptoms">
             @forelse ($profile->symptoms as $symptom)
                 <div class="my-2">
-                    {{ str_starts_with($symptom, "other.") ? str($symptom)->replaceFirst("other.", "") : __("symptoms.$symptom") }}
-                    <div class="text-xs text-muted">
-                        @if ($firstReported = $profile->firstDateForSymptom($symptom))
-                            First on {{ $firstReported->format("m/d/y") }}
-                            <span class="mx-1">&middot;</span>
-                            Last on {{ $profile->lastDateForSymptom($symptom)->format("m/d/y") }}
-                        @else
-                            Not yet reported
-                        @endif
-                    </div>
+                    <x-symptom-listing :$profile :$symptom/>
                 </div>
             @empty
                 <div class="text-gray-500">None</div>
@@ -41,16 +32,7 @@
                 <x-accordion.item header="Inactive symptoms" :badge="$inactive->count()">
                     @foreach ($inactive as $symptom)
                         <div class="my-2">
-                            {{ str_starts_with($symptom, "other.") ? str($symptom)->replaceFirst("other.", "") : __("symptoms.$symptom") }}
-                            <div class="text-xs text-muted">
-                                @if ($firstReported = $profile->firstDateForSymptom($symptom))
-                                    First on {{ $firstReported->format("m/d/y") }}
-                                    <span class="mx-1">&middot;</span>
-                                    Last on {{ $profile->lastDateForSymptom($symptom)->format("m/d/y") }}
-                                @else
-                                    Not yet reported
-                                @endif
-                            </div>
+                            <x-symptom-listing :$profile :$symptom/>
                         </div>
                     @endforeach
                 </x-accordion.item>

@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Track;
 
 use App\Actions\CalculateScoreForDay;
-use App\Models\DateNote;
+use App\Models\DateReport;
 use App\Models\Profile;
 use App\Models\SymptomReport;
 use App\Rules\SymptomReportComplete;
@@ -19,7 +19,9 @@ class Symptoms extends Component
 
     public Collection $symptomReports;
 
-    public DateNote $dateNote;
+    public DateReport $dateReport;
+
+    public bool $isSaved = false;
 
     protected $listeners = [
         'dateSelected',
@@ -27,32 +29,32 @@ class Symptoms extends Component
     ];
 
     protected $rules = [
-        "dateNote.notes" => [],
-        "dateNote.profile_id" => [],
-        "dateNote.date" => [],
+        "dateReport.notes" => [],
+        "dateReport.profile_id" => [],
+        "dateReport.date" => [],
     ];
 
     public function mount()
     {
         if (isset($this->date)) {
-            $this->loadReports();
-            $this->loadNote();
+            $this->loadDateReport();
+            $this->loadSymptomReports();
         }
     }
 
     public function dateSelected($date)
     {
         $this->date = Carbon::make($date);
-        $this->loadReports();
-        $this->loadNote();
+        $this->loadDateReport();
+        $this->loadSymptomReports();
 
         $this->resetValidation();
     }
 
-    public function updatedDateNote()
+    public function updatedDateReport()
     {
         $this
-            ->dateNote
+            ->dateReport
             ->profile()->associate($this->profile)
             ->setAttribute("date", $this->date)
             ->save();
@@ -60,7 +62,7 @@ class Symptoms extends Component
 
     public function updatedRating(SymptomReport $report)
     {
-        $this->loadReports();
+        $this->loadSymptomReports();
     }
 
     public function save()
@@ -71,19 +73,24 @@ class Symptoms extends Component
             "symptomReports" => [new SymptomReportComplete($this->profile)]
         ]);
 
-        $this->symptomReports->each->update(['saved_at' => now()]);
+        $this->dateReport->finalize()->save();
+        $this->loadSymptomReports();
+
+        $this->emit('dateFinalized');
     }
 
     public function getScoreProperty()
     {
-        return (new CalculateScoreForDay($this->profile, $this->date))();
+        return $this->dateReport->score;
     }
 
     public function getSymptomsToListProperty()
     {
-        return $this->symptomReports?->first()?->isSaved()
+        $symptoms = isset($this->dateReport->score)
             ? $this->symptomReports->pluck("symptom")
             : $this->profile->symptoms;
+
+        return collect($symptoms)->sort('sortSymptoms');
     }
 
     public function render()
@@ -91,19 +98,21 @@ class Symptoms extends Component
         return view('livewire.track.symptoms');
     }
 
-    protected function loadReports()
+    protected function loadSymptomReports()
     {
         $this->symptomReports = SymptomReport::query()
             ->whereBelongsTo($this->profile)
             ->where("date", $this->date)
             ->get();
+
+        $this->isSaved = null !== $this->dateReport->score;
     }
 
-    protected function loadNote()
+    protected function loadDateReport()
     {
-        $this->dateNote = DateNote::query()
-            ->where("profile_id", $this->profile->uuid)
-            ->where("date", $this->date)
-            ->firstOrNew();
+        $this->dateReport = DateReport::firstOrNew([
+            "profile_id" => $this->profile->uuid,
+            "date" => $this->date,
+        ]);
     }
 }

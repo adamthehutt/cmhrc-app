@@ -3,9 +3,11 @@
 namespace Tests\Feature\SymptomTracking;
 
 use App\Http\Livewire\Track\Symptoms;
+use App\Models\DateReport;
 use App\Models\Profile;
 use App\Models\SymptomReport;
 use App\Rules\SymptomReportComplete;
+use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;
 
 it ("blocks saving a day if report is incomplete", function () {
@@ -24,7 +26,7 @@ it ("blocks saving a day if report is incomplete", function () {
         ->call('save')
         ->assertHasErrors(['symptomReports' => SymptomReportComplete::class]);
 
-    expect(SymptomReport::whereNotNull('saved_at')->exists())->toBeFalse();
+    expect(DateReport::whereNotNull('score')->exists())->toBeFalse();
 });
 
 it ("allows saving a day if report is complete", function () {
@@ -51,11 +53,6 @@ it ("allows saving a day if report is complete", function () {
         ->call('save')
         ->assertHasNoErrors();
 
-    $symptomReports = $livewire->get("symptomReports");
-    foreach ($symptomReports as $report) {
-        expect($report->saved_at)->not->toBeNull();
-    }
-
-    expect(SymptomReport::whereNull('saved_at')->exists())->toBeFalse();
-    $this->assertDatabaseCount("symptom_reports", 2);
+    expect(DateReport::whereNull('score')->exists())->toBeFalse();
+    $this->assertDatabaseCount("date_reports", 1);
 });

@@ -21,7 +21,8 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix("track")->group(function () {
-        Route::view('{profile?}', 'track.index')->name("track.index")->can("view,profile");
+        Route::view('{profile}', 'track.index')->name("track.index")->can("view,profile");
+        Route::view('{profile}/symptoms/{symptom}/trend', 'track.symptom')->name('track.symptom')->can('view,profile');
     });
 });
 
