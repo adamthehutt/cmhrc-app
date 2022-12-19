@@ -1,9 +1,12 @@
 <tr wire:model="report.rating" class="group">
     <td>
         <x-symptom-name :symptom="$symptom"/>
-        <div class="text-xs text-muted">
+        <div class="text-xs">
             @if (! $this->editable)
-                <a href="{{ route('track.symptom', ['profile' => $profile, 'symptom' => $symptom]) }}">View trend</a>
+                <a href="{{ route('track.symptom', ['profile' => $profile, 'symptom' => $symptom]) }}">
+                    <i class="fas fa-chart-line mx-1 opacity-50 group-hover:opacity-100" role="button" title="View trend"></i>
+                    View trend
+                </a>
             @endif
         </div>
     </td>

@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Lang;
 
+function carbon(mixed $date): ?\Illuminate\Support\Carbon {
+    return \Illuminate\Support\Carbon::make($date);
+}
+
 function symptomName(string $shortCode) {
     return Lang::has("symptoms.$shortCode")
         ? __("symptoms.$shortCode")

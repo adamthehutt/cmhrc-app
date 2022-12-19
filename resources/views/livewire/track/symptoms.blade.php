@@ -7,11 +7,17 @@
             </x-alert.info>
         @else
             <div @class([
-              "mb-3 p-3 border text-center text-lg",
+              "mb-3 p-3 border text-center text-lg relative group",
               "bg-green-200 border-green-500" => $this->score <= 25,
               "bg-gray-200 border-gray-500" => $this->score > 25 && $this->score < 75,
               "bg-red-200 border-red-500" => $this->score >= 75,
             ])>
+                <div class="float-right text-sm">
+                    <a href="{{ route('track.chart', ['profile' => $profile, 'month' => carbon($date)->format('Y-m')]) }}" class="opacity-50 group-hover:opacity-100">
+                        <i class="fas fa-chart-line" role="button" title="View trend"></i>
+                    </a>
+                </div>
+
                 The Symptom Severity Index for {{ \Illuminate\Support\Carbon::make($date)->format("M jS, Y") }} is
                 <div class="font-bold text-4xl">
                     {{ $this->score }} / 100

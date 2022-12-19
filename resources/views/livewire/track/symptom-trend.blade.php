@@ -30,8 +30,8 @@
                     {{ __($report->date->englishDayOfWeek) }}
                 </a>
                 <div class="text-muted text-xs">
-                    <a href="{{ route('track.index', ['profile' => $profile, 'date' => $report->date]) }}">
-                        {{ $report->date->format('M d, Y') }}
+                    <a href="{{ route('track.index', ['profile' => $profile, 'date' => $report->date->toDateString()]) }}">
+                        {{ $report->date->format('M d, Y') }} &mdash; {{ $report->dateReport->score }} S.S.I.
                     </a>
                 </div>
             </td>

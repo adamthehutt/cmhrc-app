@@ -45,7 +45,7 @@ td {
     @apply px-2 py-1
 }
 
-*:not(thead) > tr {
+*:not(thead):not(tfoot):not(tbody.nohover) > tr {
     @apply hover:bg-gray-100
 }
 

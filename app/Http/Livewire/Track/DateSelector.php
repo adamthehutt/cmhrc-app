@@ -33,9 +33,9 @@ class DateSelector extends Component
 
     public function updatedTimezoneOffset($offset)
     {
-        if (! isset($this->date)) {
-            $this->carbon = now()->subSeconds($offset);
-            $this->date = $this->carbon->toDateString();
+        if (! isset($this->date) || carbon($this->date)->gt($this->getLocalTodayProperty())) {
+            $this->date = $this->getLocalTodayProperty();
+            $this->carbon = carbon($this->date);
         }
 
         // Call this here because this needs to run on initialization regardless
@@ -56,7 +56,7 @@ class DateSelector extends Component
 
     public function getLocalTodayProperty(): string
     {
-        return now()->subSeconds($this->timezoneOffset)->toDateString();
+        return now()->subMinutes($this->timezoneOffset)->toDateString();
     }
 
     public function nextDay()

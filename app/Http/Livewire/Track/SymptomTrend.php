@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Track;
 
 use App\Models\Profile;
 use App\Models\SymptomReport;
-use Illuminate\Support\Facades\Lang;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,6 +18,7 @@ class SymptomTrend extends Component
     public function getSymptomOptionsProperty(): array
     {
         return SymptomReport::query()
+            ->forProfile($this->profile)
             ->finalized()
             ->pluck("symptom")
             ->mapWithKeys(
@@ -35,7 +35,8 @@ class SymptomTrend extends Component
                 ->forSymptom($this->symptom)
                 ->finalized()
                 ->orderByDesc('symptom_reports.date')
-                ->paginate()
+                ->with(["dateReport"])
+                ->paginate(30)
         ]);
     }
 }
