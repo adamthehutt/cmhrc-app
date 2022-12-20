@@ -3,7 +3,7 @@
         <x-symptom-name :symptom="$symptom"/>
         <div class="text-xs">
             @if (! $this->editable)
-                <a href="{{ route('track.symptom', ['profile' => $profile, 'symptom' => $symptom]) }}">
+                <a href="{{ route('trend.index', ['profile' => $profile, 'symptom' => $symptom]) }}">
                     <i class="fas fa-chart-line mx-1 opacity-50 group-hover:opacity-100" role="button" title="View trend"></i>
                     View trend
                 </a>

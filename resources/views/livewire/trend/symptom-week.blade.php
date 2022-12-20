@@ -1,12 +1,15 @@
 <div class="p-6">
-    <div class="mb-6">
-        <h3><x-symptom-name :symptom="$symptom"/></h3>
-        <div class="text-muted text-sm">
-            Week of {{ $startDate->format("l, M j Y") }} through {{ \Illuminate\Support\Arr::last($dates)->format("l, M j Y") }}
+    <div class="mb-6 -mt-6">
+        <h3 class="sr-only">
+            {{ symptomName($symptom)  }}
+        </h3>
+
+        <div class="font-bold text-lg">
+            Week of {{ $startDateCarbon->format("l, M j Y") }} through {{ \Illuminate\Support\Arr::last($dates)->format("l, M j Y") }}
         </div>
     </div>
     <div
-        class="text-black bg-gradient-to-t from-white via-red-100 to-red-600"
+        class="bg-gradient-to-t from-white via-red-100 to-red-500"
         x-data="{
             init() {
                 var chart = new ApexCharts(this.$refs.chart, this.options);
@@ -15,7 +18,7 @@
             get options() {
                 return {
                     chart: {
-                        type: 'line',
+                        type: 'area',
                         height: 500,
                         width: '100%',
                         toolbar: {'show':false},
@@ -24,11 +27,18 @@
                         foreColor: '#373d3f',
                         sparkline: {'enabled':false}
                     },
-                    plotOptions: {
-                        bar: {'horizontal':false}
+                    noData: {
+                        text: 'No data reported this week',
                     },
                     colors: ['black'],
-                    series: [{'name':@js(symptomName($symptom)),'data': @js(collect($dates)->map(fn ($date) => $this->symptomReports->firstWhere('date', $date)?->rating)->toArray()) }],
+                    fill: {
+                        type: 'solid',
+                        colors: ['gray'],
+                    },
+                    series: [{
+                        'name':@js(symptomName($symptom)),
+                        'data': @js($noData ? [] : collect($dates)->map(fn ($date) => $this->symptomReports->firstWhere('date', $date)?->rating)->toArray())
+                    }],
                     dataLabels: {
                         enabled:true,
                         formatter: (val) => {
@@ -41,11 +51,12 @@
                         }
                     },
                     xaxis: {
-                        categories: @js(collect($dates)->map(fn ($date) => $date->format('D M j'))->toArray())
+                        categories: @js(collect($dates)->map(fn ($date) => $date->format('D M j'))->toArray()),
+                        tickPlacement: 'between',
                     },
                     yaxis: {
                         labels: {
-                            show: true,
+                            show: false,
                             formatter: (val) => {
                                 switch (val) {
                                     case 3: return @js(__('ratings.3'));
@@ -57,11 +68,10 @@
                             style: {
                                 fontWeight: 900
                             },
-                            rotate: 0,
-                            offsetX: 10,
-                        }
+                        },
+                        min: 0,
+                        max: 3,
                     },
-                    markers: {'show':false},
                 }
             }
         }"
@@ -76,6 +86,4 @@
             Next Week <i class="fas fa-arrow-right ml-1"></i>
         </a>
     </div>
-
-    <script src="//cdn.jsdelivr.net/npm/apexcharts"></script>
 </div>

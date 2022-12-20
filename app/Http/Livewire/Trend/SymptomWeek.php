@@ -4,15 +4,16 @@ namespace App\Http\Livewire\Trend;
 
 use App\Models\Profile;
 use App\Models\SymptomReport;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
-use Carbon\Carbon;
 use Livewire\Component;
 
 class SymptomWeek extends Component
 {
     public Profile $profile;
 
+    /** @var string Needed for URL parameter */
     public $startDate;
+
+    public $startDateCarbon;
 
     public $dates = [];
 
@@ -20,30 +21,30 @@ class SymptomWeek extends Component
 
     public $symptomReports;
 
+    public $noData = false;
+
     protected $queryString = [
-        'startDate'
+        'startDate' => ['as' => 'weekStartDate']
     ];
 
     public function mount()
     {
-        $this->startDate ??= carbon('last monday');
-        $this->fillDates();
-    }
-
-    public function updatedStartDate()
-    {
+        $this->startDateCarbon = carbon($this->startDate) ?? carbon('last monday');
+        $this->startDate ??= $this->startDateCarbon->format("Y-m-d");
         $this->fillDates();
     }
 
     public function previousWeek()
     {
-        $this->startDate->subDays(7);
+        $this->startDateCarbon->subDays(7);
+        $this->startDate = $this->startDateCarbon->format("Y-m-d");
         $this->fillDates();
     }
 
     public function nextWeek()
     {
-        $this->startDate->addDays(7);
+        $this->startDateCarbon->addDays(7);
+        $this->startDate = $this->startDateCarbon->format("Y-m-d");
         $this->fillDates();
     }
 
@@ -55,7 +56,7 @@ class SymptomWeek extends Component
     protected function fillDates()
     {
         $this->dates = [];
-        $day = $this->startDate->copy();
+        $day = $this->startDateCarbon->copy();
         for ($i = 0; $i < 7; $i++) {
             $this->dates[$i] = $day;
             $day = $this->dates[$i]->copy()->addDay();
@@ -68,19 +69,6 @@ class SymptomWeek extends Component
             ->finalized()
             ->get();
 
-        $data = [];
-        foreach ($this->dates as $date) {
-            $data[] = $this->symptomReports->firstWhere('date', $date)?->rating;
-        }
-
-        $chart = app(LarapexChart::class)->lineChart();
-        $chart
-            ->addData(symptomName($this->symptom), $data)
-            ->setXAxis(collect($this->dates)->map(
-                fn (Carbon $date) => $date->format("D M j"))->toArray()
-            )
-            ->setColors(['black'])
-            ->setGrid()
-            ->setDataLabels();
+        $this->noData = 0 === $this->symptomReports->count();
     }
 }
