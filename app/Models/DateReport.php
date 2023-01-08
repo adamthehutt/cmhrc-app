@@ -24,6 +24,10 @@ class DateReport extends Model
         'date' => 'date:Y-m-d'
     ];
 
+    protected $dates = [
+        'date'
+    ];
+
     public function profile(): BelongsTo
     {
         return $this->belongsTo(Profile::class, "profile_id");

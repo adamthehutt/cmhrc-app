@@ -52,3 +52,7 @@ td {
 tr:first-child td {
     @apply pt-2 px-2 p-1
 }
+
+[x-cloak] {
+    display: none;
+}

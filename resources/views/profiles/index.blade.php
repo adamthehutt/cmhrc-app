@@ -20,4 +20,5 @@
     <livewire:profiles.modal />
     <livewire:profiles.symptoms-modal />
     <livewire:profiles.diagnoses-modal />
+    <livewire:profiles.medications-modal />
 </x-app-layout>

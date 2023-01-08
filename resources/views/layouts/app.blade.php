@@ -15,7 +15,16 @@
         <script src="https://kit.fontawesome.com/7317d379fd.js" crossorigin="anonymous"></script>
         @livewireStyles
     </head>
-    <body class="font-sans antialiased" x-data>
+    <body
+        class="font-sans antialiased"
+        x-data="{
+            today() {
+                var today = new Date;
+                today = new Date(today.getTime() - (today.getTimezoneOffset()*60*1000))
+                return today.toISOString().split('T')[0];
+            }
+        }"
+    >
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 

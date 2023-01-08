@@ -62,6 +62,57 @@
     </table>
 
     <hr class="my-12"/>
+    @if ($date)
+        <table class="w-full lg:w-2/3">
+            <thead>
+            <tr>
+                <th>Medication</th>
+                <th>Taken as prescribed?</th>
+            </tr>
+            </thead>
+            @if (! $isSaved)
+                <tbody x-on:medication-changed.window="$wire.$refresh()">
+                    @forelse ($profile->currentMedications as $medication)
+                        <livewire:track.medication-row
+                                :medication="$medication"
+                                :date="$date"
+                                :key="'medication-'.$medication->id"
+                        />
+                    @empty
+                        <tr>
+                            <td colspan="2" class="text-muted">
+                                No current medications for this profile
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            @else
+                @forelse (\App\Models\MedicationReport::forDateReport($dateReport)->get() as $report)
+                    <tr class="align-text-top">
+                        <td>
+                            {{ $report->medication->name }}
+                            <div class="text-xs text-muted">
+                                {{ $report->medication->frequency_other ?: $report->medication->frequency }}
+                                &middot; {{ $report->medication->dosage }}
+                            </div>
+                        </td>
+                        <td>
+                            <i @class(['fas', 'fa-check text-green-600' => $report->taken, 'fa-times text-red-600' => ! $report->taken])
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="2" class="text-muted">
+                            No medications reported
+                        </td>
+                    </tr>
+                @endforelse
+            @endif
+        </table>
+    @endif
+
+
+    <hr class="my-12"/>
 
     <div>
         @if ($date)

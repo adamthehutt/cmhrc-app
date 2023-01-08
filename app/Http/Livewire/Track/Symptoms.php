@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Track;
 
-use App\Actions\CalculateScoreForDay;
 use App\Models\DateReport;
+use App\Models\MedicationReport;
 use App\Models\Profile;
 use App\Models\SymptomReport;
 use App\Rules\SymptomReportComplete;

@@ -41,6 +41,10 @@
                         <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.diagnoses-modal', 'edit', @js($profile->uuid))">
                             <x-icon.cogs/> Diagnoses ({{ $profile->diagnoses()->count() }})
                         </a>
+
+                        <a class="ml-4" href="#" wire:click.prevent="$emitTo('profiles.medications-modal', 'edit', @js($profile->uuid))">
+                            <x-icon.cogs/> Medications ({{ $profile->currentMedications()->count() }})
+                        </a>
                     </div>
                 </li>
             @endforeach

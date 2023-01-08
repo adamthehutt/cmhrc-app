@@ -38,6 +38,21 @@ class Profile extends Model
         return $this->hasMany(Diagnosis::class, 'profile_id');
     }
 
+    public function medications(): HasMany
+    {
+        return $this->hasMany(Medication::class, 'profile_id')->orderBy('name');
+    }
+
+    public function currentMedications(): HasMany
+    {
+        return $this->medications()->whereNull('end_date');
+    }
+
+    public function previousMedications(): HasMany
+    {
+        return $this->medications()->whereNotNull('end_date');
+    }
+
     public function firstDateForSymptom(string $symptom): ?Carbon
     {
         $date = SymptomReport::query()

@@ -6,7 +6,16 @@
             <option>{{ $empty !== true ? $empty : '' }}</option>
         @endif
         @foreach ($options as $key => $value)
-            <option value="{{$key}}">{{ $value }}</option>
+            @if (is_array($value))
+                @php ($subItems = \Illuminate\Support\Arr::isList((array) $value) ? array_combine((array) $value, (array) $value) : $value)
+                <optgroup label="{{$key}}">
+                    @foreach ($subItems as $subItemKey => $subItemValue)
+                        <option value="{{$subItemKey}}">{{ $subItemValue }}</option>
+                    @endforeach
+                </optgroup>
+            @else
+                <option value="{{$key}}">{{ $value }}</option>
+            @endif
         @endforeach
         {{ $slot }}
     </select>
