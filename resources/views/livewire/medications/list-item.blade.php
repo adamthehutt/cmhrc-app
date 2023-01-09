@@ -13,24 +13,46 @@
     x-on:medication-changed.window="reset()"
 >
     {{ $medication->name }}
-    <div class="text-xs text-muted">
-        {{ $medication->frequency_other ?: $medication->frequency }}
-        &middot; {{ $medication->dosage }}
-        @if (! $medication->getOriginal('end_date'))
-            &middot; Since {{ $medication->start_date->format('m/d/y') }}
-            &middot; <a href="#" x-on:click.prevent="dosageChanged = true; noLongerTaking = false; $wire.set('medication.end_date', today())">Change dosage</a>
-            &middot; <a href="#" x-on:click.prevent="noLongerTaking = true; dosageChanged = false; $wire.set('medication.end_date', today())">Stop taking</a>
-            <span x-show="dosageChanged || noLongerTaking">
-                &middot; <a href="#" class="text-red-600" x-on:click.prevent="reset">Never mind</a>
-            </span>
-        @else
-            &middot; {{ $medication->start_date->format('m/d/y') }} &ndash; {{ $medication->end_date->format('m/d/y') }}
-            @if ($medication->reason_stopped)
-                <div class="mt-1">
-                    <strong>Reason stopped:</strong> <em>{{ $medication->reason_stopped }}</em>
-                </div>
-            @endif
+    <ul class="text-xs text-muted flex">
+        <li class="bg-gray-200 rounded font-bold px-2 mr-1">
+            {{ $medication->frequency_other ?: $medication->frequency }}
+        </li>
+        <li class="bg-gray-200 rounded font-bold px-2 mr-1">
+            {{ $medication->dosage }}
+        </li>
+        @if ($compliance = (int) $medication->compliance())
+            <li @class(['rounded font-bold px-2 mr-1 bg-gray-200', 'text-red-600' => $compliance < 80, 'text-green-800' => $compliance > 90]) title="Compliance percentage">
+                {{ $medication->compliance() }}%
+            </li>
         @endif
+        @if (! $medication->getOriginal('end_date'))
+            <li class="bg-gray-200 rounded font-bold px-2 mr-1">
+                Since {{ $medication->start_date->format('m/d/y') }}
+            </li>
+            <li class="border-gray-300 hover:bg-gray-200 border rounded font-bold px-2 mr-1">
+                <a href="#" x-on:click.prevent="dosageChanged = true; noLongerTaking = false; $wire.set('medication.end_date', today())">
+                    <i class="fas fa-prescription mr-1"></i>
+                    Change dosage
+                </a>
+            </li>
+            <li class="border-gray-300 hover:bg-gray-200 border rounded font-bold px-2 mr-1">
+                <a href="#" x-on:click.prevent="noLongerTaking = true; dosageChanged = false; $wire.set('medication.end_date', today())">
+                    <i class="fas fa-trash mr-1"></i>
+                    Stop taking
+                </a>
+            </li>
+        @else
+            <li class="bg-gray-200 rounded font-bold px-2 mr-1">
+                {{ $medication->start_date->format('m/d/y') }} &ndash; {{ $medication->end_date->format('m/d/y') }}
+            </li>
+        @endif
+    </ul>
+    <div>
+    @if ($medication->reason_stopped)
+        <div class="mt-1">
+            <strong>Reason stopped:</strong> <em>{{ $medication->reason_stopped }}</em>
+        </div>
+    @endif
     </div>
 
     <div x-cloak x-show="dosageChanged">
@@ -47,9 +69,12 @@
                 <x-input-text wire:model="medication.dosage" />
             </x-form-field>
         </div>
-        <div class="text-right text-green-500 text-sm">
-            <a href="#" wire:click.prevent="changeDosage">
+        <div class="text-right text-sm">
+            <a href="#" wire:click.prevent="changeDosage" class="text-green-500">
                 <i class="fas fa-check mr-1"></i> Save new dosage
+            </a>
+            <a href="#" class="ml-2 text-red-600" x-on:click.prevent="reset">
+                <i class="fas fa-times mr-1"></i> Never mind
             </a>
         </div>
     </div>
@@ -66,9 +91,12 @@
                 <x-form-tip>Add a few notes to explain why this medication was stopped</x-form-tip>
             </x-form-field>
         </div>
-        <div class="text-right text-red-600 text-sm">
-            <a href="#" wire:click.prevent="noLongerTaking">
+        <div class="text-right text-sm">
+            <a href="#" wire:click.prevent="noLongerTaking" class="text-green-500">
                 <i class="fas fa-archive mr-1"></i> Archive medication
+            </a>
+            <a href="#" class="ml-2 text-red-600" x-on:click.prevent="reset">
+                <i class="fas fa-times mr-1"></i> Never mind
             </a>
         </div>
     </div>

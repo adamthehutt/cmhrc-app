@@ -132,7 +132,7 @@
             <tbody>
             <tr>
                 <td class="text-center">
-                    <x-weather :date-report="$dateReport"/>
+                    <x-weather.index :date-report="$dateReport"/>
                 </td>
             </tr>
             </tbody>
