@@ -13,7 +13,8 @@ class ListItem extends Component
         'medication.frequency' => ['required'],
         'medication.frequency_other' => ['required_if:medication.frequency,Other'],
         'medication.dosage' => ['required'],
-        'medication.end_date' => []
+        'medication.end_date' => [],
+        'medication.reason_stopped' => [],
     ];
 
     public function changeDosage()

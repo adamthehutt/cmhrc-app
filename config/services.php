@@ -36,4 +36,12 @@ return [
         'client_secret' => env('WORDPRESS_CLIENT_SECRET'),
         'redirect' => env('WORDPRESS_REDIRECT_URI')
     ],
+
+    'open_weather' => [
+        'key' => '25d0dd38b7ea016ab8400e1aaa28887a',
+    ],
+
+    'weather_api' => [
+        'key' => '58887ce9669e43a78fb221356230801',
+    ]
 ];

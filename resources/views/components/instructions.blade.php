@@ -6,5 +6,10 @@
     </div>
     <div class="text-gray-700 p-3 text-sm">
         {{ $slot }}
+        @if (isset($bullets))
+            <ul class="list-disc ml-6 text-gray-700">
+                {{ $bullets }}
+            </ul>
+        @endif
     </div>
 </div>

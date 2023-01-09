@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property        string      $dosage
  * @property        string      $start_date
  * @property        string      $end_date
+ * @property        string      $reason_stopped
  * @property-read   array       $frequency_options
  */
 class Medication extends Model

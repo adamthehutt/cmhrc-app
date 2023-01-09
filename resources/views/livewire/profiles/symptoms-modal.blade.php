@@ -2,12 +2,12 @@
     <x-slot:header>Symptoms to Track</x-slot:header>
 
     <x-instructions class="clear-both mb-5">
-        <ul class="list-disc ml-6 text-gray-700">
+        <x-slot:bullets>
             <li>Select a minimum of 4 and a maximum of 10 symptoms to track daily.</li>
             <li>Choose from any category and in any combination.</li>
             <li>Pick the ones that are the most troublesome for you/your child.</li>
             <li>You can change your selections if they resolve or if others become more problematic.</li>
-        </ul>
+        </x-slot:bullets>
     </x-instructions>
 
     <h3>Currently tracking:</h3>

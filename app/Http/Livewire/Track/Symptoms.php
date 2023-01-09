@@ -3,10 +3,10 @@
 namespace App\Http\Livewire\Track;
 
 use App\Models\DateReport;
-use App\Models\MedicationReport;
 use App\Models\Profile;
 use App\Models\SymptomReport;
 use App\Rules\SymptomReportComplete;
+use App\Services\WeatherApi\Client as WeatherApi;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
@@ -32,6 +32,7 @@ class Symptoms extends Component
         "dateReport.notes" => [],
         "dateReport.profile_id" => [],
         "dateReport.date" => [],
+        "dateReport.weather" => [],
     ];
 
     public function mount()
@@ -91,6 +92,12 @@ class Symptoms extends Component
             : $this->profile->symptoms;
 
         return collect($symptoms)->sort('sortSymptoms');
+    }
+
+    public function fetchWeather($latitude, $longitude)
+    {
+        $this->dateReport->weather = (new WeatherApi())->fetchWeather($latitude, $longitude, $this->date);
+        $this->updatedDateReport();
     }
 
     public function render()

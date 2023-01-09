@@ -18,13 +18,18 @@
         &middot; {{ $medication->dosage }}
         @if (! $medication->getOriginal('end_date'))
             &middot; Since {{ $medication->start_date->format('m/d/y') }}
-            &middot; <a href="#" x-on:click.prevent="dosageChanged = true; noLongerTaking = false; $wire.set('medication.end_date', today())">Dosage changed</a>
-            &middot; <a href="#" x-on:click.prevent="noLongerTaking = true; dosageChanged = false; $wire.set('medication.end_date', today())">No longer taking</a>
+            &middot; <a href="#" x-on:click.prevent="dosageChanged = true; noLongerTaking = false; $wire.set('medication.end_date', today())">Change dosage</a>
+            &middot; <a href="#" x-on:click.prevent="noLongerTaking = true; dosageChanged = false; $wire.set('medication.end_date', today())">Stop taking</a>
             <span x-show="dosageChanged || noLongerTaking">
                 &middot; <a href="#" class="text-red-600" x-on:click.prevent="reset">Never mind</a>
             </span>
         @else
             &middot; {{ $medication->start_date->format('m/d/y') }} &ndash; {{ $medication->end_date->format('m/d/y') }}
+            @if ($medication->reason_stopped)
+                <div class="mt-1">
+                    <strong>Reason stopped:</strong> <em>{{ $medication->reason_stopped }}</em>
+                </div>
+            @endif
         @endif
     </div>
 
@@ -50,10 +55,15 @@
     </div>
 
     <div x-cloak x-show="noLongerTaking">
-        <div class="flex">
+        <div class="md:flex">
             <x-form-field class="md:w-1/2 w-full">
                 <x-input-label>End date</x-input-label>
                 <x-input-date wire:model.lazy="medication.end_date" />
+            </x-form-field>
+            <x-form-field class="md:w-1/2 w-full">
+                <x-input-label>Reason for stopping:</x-input-label>
+                <x-input-textarea wire:model.lazy="medication.reason_stopped" />
+                <x-form-tip>Add a few notes to explain why this medication was stopped</x-form-tip>
             </x-form-field>
         </div>
         <div class="text-right text-red-600 text-sm">

@@ -61,9 +61,8 @@
         @endif
     </table>
 
-    <hr class="my-12"/>
     @if ($date)
-        <table class="w-full lg:w-2/3">
+        <table class="w-full md:w-2/3 mt-12">
             <thead>
             <tr>
                 <th>Medication</th>
@@ -90,14 +89,10 @@
                 @forelse (\App\Models\MedicationReport::forDateReport($dateReport)->get() as $report)
                     <tr class="align-text-top">
                         <td>
-                            {{ $report->medication->name }}
-                            <div class="text-xs text-muted">
-                                {{ $report->medication->frequency_other ?: $report->medication->frequency }}
-                                &middot; {{ $report->medication->dosage }}
-                            </div>
+                            <x-medications.short-list-item :medication="$report->medication"/>
                         </td>
                         <td>
-                            <i @class(['fas', 'fa-check text-green-600' => $report->taken, 'fa-times text-red-600' => ! $report->taken])
+                            <x-icon.medications.report-taken :report="$report"/>
                         </td>
                     </tr>
                 @empty
@@ -109,22 +104,40 @@
                 @endforelse
             @endif
         </table>
+
+        <table class="w-full md:w-2/3 mt-12">
+            @if ($date)
+                <thead>
+                <tr>
+                    <th>Notes for {{ \Illuminate\Support\Carbon::make($date)->format("F jS, Y") }}</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>
+                        <x-input-textarea wire:model="dateReport.notes" class="w-full" placeholder="Enter some notes to provide additional context" aria-label="Notes for the day"/>
+                        <div class="text-muted text-sm" wire:loading.delay wire:target="dateReport.notes">
+                            <i class="fas fa-spinner fa-spin"></i> Working
+                        </div>
+                    </td>
+                </tr>
+            @endif
+        </table>
+
+        <table class="w-full md:w-2/3 mt-12">
+            <thead>
+            <tr>
+                <th>Weather</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center">
+                    <x-weather :date-report="$dateReport"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     @endif
-
-
-    <hr class="my-12"/>
-
-    <div>
-        @if ($date)
-            <x-input-label>
-                Notes for {{ \Illuminate\Support\Carbon::make($date)->format("F jS, Y") }}
-                <x-input-textarea wire:model="dateReport.notes" class="lg:w-1/2 md:w-2/3 w-full" placeholder="Enter some notes to provide additional context"/>
-            </x-input-label>
-            <div class="text-muted text-sm" wire:loading.delay wire:target="dateReport.notes">
-                <i class="fas fa-spinner fa-spin"></i> Working
-            </div>
-        @endif
-    </div>
 
     <div>
         @error('symptomReports')

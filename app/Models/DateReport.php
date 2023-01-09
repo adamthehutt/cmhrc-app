@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use App\Actions\CalculateScoreForDay;
+use App\Casts\AsWeatherDay;
+use App\DataObjects\WeatherDay;
 use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property WeatherDay $weather
+ */
 class DateReport extends Model
 {
     use HasFactory,
@@ -21,7 +26,8 @@ class DateReport extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'date' => 'date:Y-m-d'
+        'date' => 'date:Y-m-d',
+        'weather' => AsWeatherDay::class,
     ];
 
     protected $dates = [
